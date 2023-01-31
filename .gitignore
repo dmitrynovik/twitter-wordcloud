@@ -32,7 +32,7 @@ build/
 ### VS Code ###
 .vscode/
 
-### Ignore Twitter Bindings Secrets ###
+### Ignore Secrets ###
 bindings/twitter/bearer-token
 /package-lock.json
 /src/main/resources/static/built/
@@ -41,3 +41,6 @@ bindings/twitter/bearer-token
 /frontend-js/node/
 /stateless/src/main/resources/static/built/
 /modelviewcontroller/src/main/resources/static/built/
+
+application-modelviecontroller.properties
+

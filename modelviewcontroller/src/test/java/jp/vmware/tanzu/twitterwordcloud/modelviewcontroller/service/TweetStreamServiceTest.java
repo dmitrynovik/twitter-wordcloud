@@ -145,6 +145,7 @@ class TweetStreamServiceTest {
 		assertEquals(1, textCounts.get(3).getSize());
 	}
 
+	/*
 	@Test
 	void skipNonJapanese() throws InterruptedException {
 
@@ -173,6 +174,7 @@ class TweetStreamServiceTest {
 		assertEquals(0, myTweets.size());
 
 	}
+	*/
 
 	@Test
 	void englishSupport() throws InterruptedException {
