@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
+// Oracle, MySQL, Postgres, whatever ... 
 public interface MyTweetRepository extends CrudRepository<MyTweet, Integer> {
 
 	List<MyTweet> findAllByOrderByTweetIdDesc();

@@ -14,8 +14,8 @@ spring.rabbitmq.username=RABBITMQ_USERNAME
 ```
 * Start twitter client
 ```
-mvnw.cmd install
-mvnw.cmd spring-boot:run -pl twitterapiclient
+./mvnw install
+./mvnw spring-boot:run -pl twitterapiclient
 ```
 This should start the API client
 
@@ -32,9 +32,10 @@ spring.rabbitmq.username=RABBITMQ_USERNAME
 ```
 * Start the mvc client:
 ```
-mvnw.cmd install
-mvnw.cmd spring-boot:run -pl modelviewcontroller
+./mvnw install
+./mvnw spring-boot:run -pl modelviewcontroller
 ```
+
 * Add to activate postgres
 ```
 spring.datasource.driver-class-name=org.postgresql.Driver
@@ -49,4 +50,3 @@ spring.session.store-type=redis
 spring.redis.cluster.nodes=REDIS_NODES  
 
 ```
-
