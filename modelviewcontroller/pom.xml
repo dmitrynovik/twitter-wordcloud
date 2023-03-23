@@ -103,7 +103,18 @@
             <artifactId>kuromoji-ipadic</artifactId>
             <version>${kuromoji.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>javax.cache</groupId>
+            <artifactId>cache-api</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springframework.geode</groupId>
+            <artifactId>spring-geode-starter</artifactId>
+            <version>1.4.13</version>
+        </dependency>
+    
         <!-- webjars -->
         <dependency>
             <groupId>org.webjars</groupId>
