@@ -21,7 +21,7 @@ import org.springframework.boot.ApplicationRunner;
 @SpringBootApplication(scanBasePackages = "jp.vmware.tanzu.twitterwordcloud")
 @ClientCacheApplication
 @EnableGemfireCaching
-//@EnablePdx
+@EnablePdx
 //@EnableEntityDefinedRegions(clientRegionShortcut = ClientRegionShortcut.PROXY, basePackageClasses = MyTweet.class)
 @EnableCachingDefinedRegions(clientRegionShortcut = ClientRegionShortcut.PROXY)
 @EnableClusterConfiguration(useHttp = true, requireHttps = false)

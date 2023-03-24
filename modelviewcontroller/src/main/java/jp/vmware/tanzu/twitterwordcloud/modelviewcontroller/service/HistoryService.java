@@ -9,12 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
-import java.util.Date;
 
 import com.rabbitmq.stream.*;
 import com.twitter.clientlib.model.*;
@@ -33,14 +29,17 @@ public class HistoryService {
 	private final String rabbitmqHost;
 	private final String rabbitmqUser;
 	private final String rabbitmqPassword;
+	private final CacheService cacheService;
 
 	public HistoryService(TweetStreamService tweetStreamService, 
+			CacheService cacheService,
 			@Value("${spring.rabbitmq.host}") String rabbitmqHost, 
 			@Value("${spring.rabbitmq.username}") String rabbitmqUser,
 			@Value("${spring.rabbitmq.password}") String rabbitmqPassword
 		) {
 
 		this.tweetStreamService = tweetStreamService;
+		this.cacheService = cacheService;
 		this.rabbitmqHost = rabbitmqHost;
 		this.rabbitmqUser = rabbitmqUser;
 		this.rabbitmqPassword = rabbitmqPassword;
@@ -93,8 +92,8 @@ public class HistoryService {
 						t.text = myTweet.text;
 						t.id = myTweet.tweetId;
 						t.username = myTweet.username;
-						CachedTweet cached = cache(t);
-						if (getTweet(cached.id) == null)
+						CachedTweet cached = cacheService.cache(t);
+						if (cacheService.getTweet(cached.id) == null)
 							logger.warn("Cache failed");
 
 					} catch (Exception ex) {
@@ -114,16 +113,5 @@ public class HistoryService {
 		// logger.info("Last stream offset: " + offset);
 
 		//consumer.store(currentTime);
-	}
-
-	@Cacheable(cacheNames = "Tweets", key = "#id")
-	public CachedTweet getTweet(String id) {
-		return null;
-	}
-
-	@CachePut(cacheNames = "Tweets", key = "#result.id")
-	public CachedTweet cache(CachedTweet tweet) {
-		logger.debug("Caching tweet: " + tweet.id);
-		return tweet;
 	}
 }
