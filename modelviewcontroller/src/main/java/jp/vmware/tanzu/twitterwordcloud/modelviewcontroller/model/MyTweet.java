@@ -45,4 +45,9 @@ public class MyTweet {
 		this.username = username;
 	}
 
+	@Override
+  	public int hashCode() {
+
+		return this.tweetId.hashCode();
+  }
 }
