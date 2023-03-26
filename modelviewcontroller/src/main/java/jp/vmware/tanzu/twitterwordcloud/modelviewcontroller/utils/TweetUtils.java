@@ -21,6 +21,7 @@ public class TweetUtils {
 		myTweet.setTweetId(tweet.getId());
 		myTweet.setText(tweet.getText());
 		myTweet.setUsername(user.getUsername());
+		//myTweet.setCreated(tweet.getCreatedAt());
 
         return myTweet;
     }

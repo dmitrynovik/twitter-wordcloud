@@ -19,6 +19,8 @@ public class CachedTweet {
 
 	public String username;
 
+	public int created;
+
 	@Override
 	public boolean equals(Object obj) {
 

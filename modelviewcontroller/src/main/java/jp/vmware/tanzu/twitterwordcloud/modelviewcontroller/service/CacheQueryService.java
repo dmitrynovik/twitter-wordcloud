@@ -1,5 +1,6 @@
 package jp.vmware.tanzu.twitterwordcloud.modelviewcontroller.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.geode.cache.GemFireCache;
@@ -16,14 +17,10 @@ public class CacheQueryService {
 		this.queryService = cache.getQueryService();
 	}
 
-	public List<CachedTweet> getAllTweets() throws FunctionDomainException, TypeMismatchException, NameResolutionException, QueryInvocationTargetException {
-
+	public List<CachedTweet> getAllTweetsSince(Date since) throws FunctionDomainException, TypeMismatchException, NameResolutionException, QueryInvocationTargetException {
 		SelectResults results = (SelectResults) queryService
-			.newQuery("Select * FROM /Tweets")
+			.newQuery("Select * FROM /Tweets WHERE created > " + since.getTime() / 1000)
 			.execute();
-
-		// int size = results.size();
-		// CachedTweet[] tweets = new CachedTweet[size];
 
 		return results.asList();
 	}

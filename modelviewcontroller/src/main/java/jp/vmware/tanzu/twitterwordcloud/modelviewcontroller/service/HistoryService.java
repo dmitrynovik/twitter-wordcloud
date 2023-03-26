@@ -5,12 +5,14 @@ import jp.vmware.tanzu.twitterwordcloud.modelviewcontroller.model.CachedTweet;
 import jp.vmware.tanzu.twitterwordcloud.modelviewcontroller.model.MyTweet;
 import jp.vmware.tanzu.twitterwordcloud.modelviewcontroller.utils.TweetUtils;
 
+import java.time.ZoneOffset;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
-
 
 import com.rabbitmq.stream.*;
 import com.twitter.clientlib.model.*;
@@ -31,12 +33,11 @@ public class HistoryService {
 	private final String rabbitmqPassword;
 	private final CacheService cacheService;
 
-	public HistoryService(TweetStreamService tweetStreamService, 
+	public HistoryService(TweetStreamService tweetStreamService,
 			CacheService cacheService,
-			@Value("${spring.rabbitmq.host}") String rabbitmqHost, 
+			@Value("${spring.rabbitmq.host}") String rabbitmqHost,
 			@Value("${spring.rabbitmq.username}") String rabbitmqUser,
-			@Value("${spring.rabbitmq.password}") String rabbitmqPassword
-		) {
+			@Value("${spring.rabbitmq.password}") String rabbitmqPassword) {
 
 		this.tweetStreamService = tweetStreamService;
 		this.cacheService = cacheService;
@@ -46,23 +47,22 @@ public class HistoryService {
 	}
 
 	public void readFromRabbitMQStream() {
-		
+
 		logger.info("Connecting to RabbitMQ stream at " + rabbitmqHost + " as " + rabbitmqUser);
 
 		// Streams:
 		Address entryPoint = new Address(rabbitmqHost, 5552);
 		Environment environment = Environment.builder()
-			.host(rabbitmqHost)
-			.username(rabbitmqUser)
-			.password(rabbitmqPassword)
-			.addressResolver(address -> entryPoint)
-			.build();
+				.host(rabbitmqHost)
+				.username(rabbitmqUser)
+				.password(rabbitmqPassword)
+				.addressResolver(address -> entryPoint)
+				.build();
 
-
-			environment.consumerBuilder()
+		environment.consumerBuilder()
 				.stream(MvcMQConfiguration.STREAM_NAME)
 				.offset(OffsetSpecification.first())
-				.messageHandler((offset, message) -> {  
+				.messageHandler((offset, message) -> {
 
 					long time = offset.timestamp();
 					if (time < streamStartTime)
@@ -76,13 +76,14 @@ public class HistoryService {
 						if (currentTime < streamStartTime)
 							streamStartTime = currentTime;
 
-						//logger.debug("Start date: " + new Date(this.streamStartTime) + ", End Date: " + new Date(this.currentTime));
+						// logger.debug("Start date: " + new Date(this.streamStartTime) + ", End Date: "
+						// + new Date(this.currentTime));
 
 						String line = new String(message.getBodyAsBinary());
 						StreamingTweetResponse streamingTweetResponse = TweetUtils.setStreamTweetResponse(line);
 
 						if (streamingTweetResponse == null) {
-							//Thread.sleep(100);
+							// Thread.sleep(100);
 							return;
 						}
 
@@ -92,6 +93,8 @@ public class HistoryService {
 						t.text = myTweet.text;
 						t.id = myTweet.tweetId;
 						t.username = myTweet.username;
+						t.created = (int) new Date(currentTime / 1000).getTime();
+
 						CachedTweet cached = cacheService.cache(t);
 						if (cacheService.getTweet(cached.id) == null)
 							logger.warn("Cache failed");
@@ -100,18 +103,19 @@ public class HistoryService {
 						logger.error(ex.toString());
 					}
 				})
-			.build(); 
+				.build();
 
-		// StreamStats stats = environment.queryStreamStats(MvcMQConfiguration.STREAM_NAME);
+		// StreamStats stats =
+		// environment.queryStreamStats(MvcMQConfiguration.STREAM_NAME);
 		// try {
-		// 	offset = stats.committedChunkId();
+		// offset = stats.committedChunkId();
 
 		// } catch (Exception ex) {
-		// 	offset = -1;
+		// offset = -1;
 		// }
-		
+
 		// logger.info("Last stream offset: " + offset);
 
-		//consumer.store(currentTime);
+		// consumer.store(currentTime);
 	}
 }

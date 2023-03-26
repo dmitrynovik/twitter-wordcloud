@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 @Entity
 public class MyTweet {
@@ -50,4 +51,8 @@ public class MyTweet {
 
 		return this.tweetId.hashCode();
   }
+
+	public void setCreated(OffsetDateTime createdAt) {
+		this.createDateTime = createdAt.toLocalDateTime();
+	}
 }
