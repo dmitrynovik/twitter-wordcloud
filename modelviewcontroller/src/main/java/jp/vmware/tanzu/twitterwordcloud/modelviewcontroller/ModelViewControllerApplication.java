@@ -18,7 +18,13 @@ import org.apache.geode.cache.client.ClientRegionShortcut;
 import org.springframework.boot.ApplicationRunner;
 
 
-@SpringBootApplication(scanBasePackages = "jp.vmware.tanzu.twitterwordcloud")
+@SpringBootApplication(
+    scanBasePackages = "jp.vmware.tanzu.twitterwordcloud"
+    ,exclude = {
+        org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration.class,
+        org.springframework.boot.actuate.autoconfigure.security.servlet.ManagementWebSecurityAutoConfiguration.class
+    }
+    )
 @ClientCacheApplication
 @EnableGemfireCaching
 @EnablePdx
