@@ -11,6 +11,11 @@ public class WordcloudController {
 		return "wordcloud";
 	}
 
+	@GetMapping("/wordcloud-history")
+	public String WordcloudHistory() {
+		return "wordcloud-history";
+	}
+
 	@GetMapping("/login")
 	public String login() {
 		return "login";
