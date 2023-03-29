@@ -35,6 +35,7 @@ public class HistoryService {
 
 	public HistoryService(TweetStreamService tweetStreamService,
 			CacheService cacheService,
+			@Value("${history.offset:0}") long historyOffset, 
 			@Value("${spring.rabbitmq.host}") String rabbitmqHost,
 			@Value("${spring.rabbitmq.username}") String rabbitmqUser,
 			@Value("${spring.rabbitmq.password}") String rabbitmqPassword) {
