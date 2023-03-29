@@ -32,6 +32,7 @@ public class HistoryService {
 	private final String rabbitmqUser;
 	private final String rabbitmqPassword;
 	private final CacheService cacheService;
+	private long historyOffset;
 
 	public HistoryService(TweetStreamService tweetStreamService,
 			CacheService cacheService,
@@ -42,6 +43,7 @@ public class HistoryService {
 
 		this.tweetStreamService = tweetStreamService;
 		this.cacheService = cacheService;
+		this.historyOffset = historyOffset;
 		this.rabbitmqHost = rabbitmqHost;
 		this.rabbitmqUser = rabbitmqUser;
 		this.rabbitmqPassword = rabbitmqPassword;
@@ -62,7 +64,7 @@ public class HistoryService {
 
 		environment.consumerBuilder()
 				.stream(MvcMQConfiguration.STREAM_NAME)
-				.offset(OffsetSpecification.first())
+				.offset(OffsetSpecification.offset(historyOffset))
 				.messageHandler((offset, message) -> {
 
 					long time = offset.timestamp();
