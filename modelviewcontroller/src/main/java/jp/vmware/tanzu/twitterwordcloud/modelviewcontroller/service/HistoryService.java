@@ -41,7 +41,7 @@ public class HistoryService {
 
 		this.tweetStreamService = tweetStreamService;
 		this.cacheService = cacheService;
-		this.since = new SimpleDateFormat("yyyy-MM-dd").parse(since);
+		this.since = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(since);
 		this.rabbitmqHost = rabbitmqHost;
 		this.rabbitmqUser = rabbitmqUser;
 		this.rabbitmqPassword = rabbitmqPassword;
@@ -49,7 +49,7 @@ public class HistoryService {
 
 	public void readFromRabbitMQStream() {
 
-		logger.info("Connecting to RabbitMQ stream at " + rabbitmqHost + " as " + rabbitmqUser);
+		logger.info("Connecting to RabbitMQ stream at " + rabbitmqHost + " as " + rabbitmqUser + ", consuming since: " + since);
 
 		// Streams:
 		Address entryPoint = new Address(rabbitmqHost, 5552);
