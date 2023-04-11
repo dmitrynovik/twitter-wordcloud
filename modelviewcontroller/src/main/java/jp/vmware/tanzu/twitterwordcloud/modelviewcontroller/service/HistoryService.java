@@ -5,7 +5,8 @@ import jp.vmware.tanzu.twitterwordcloud.modelviewcontroller.model.CachedTweet;
 import jp.vmware.tanzu.twitterwordcloud.modelviewcontroller.model.MyTweet;
 import jp.vmware.tanzu.twitterwordcloud.modelviewcontroller.utils.TweetUtils;
 
-import java.time.ZoneOffset;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -16,9 +17,6 @@ import org.springframework.stereotype.Service;
 
 import com.rabbitmq.stream.*;
 import com.twitter.clientlib.model.*;
-
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 
 @Service
 @ConditionalOnProperty(value = "message.queue.enabled", havingValue = "true")
@@ -32,18 +30,18 @@ public class HistoryService {
 	private final String rabbitmqUser;
 	private final String rabbitmqPassword;
 	private final CacheService cacheService;
-	private long historyOffset;
+	private Date since;
 
 	public HistoryService(TweetStreamService tweetStreamService,
 			CacheService cacheService,
-			@Value("${history.offset:0}") long historyOffset, 
+			@Value("${history.since:0}") String since, 
 			@Value("${spring.rabbitmq.host}") String rabbitmqHost,
 			@Value("${spring.rabbitmq.username}") String rabbitmqUser,
-			@Value("${spring.rabbitmq.password}") String rabbitmqPassword) {
+			@Value("${spring.rabbitmq.password}") String rabbitmqPassword) throws ParseException {
 
 		this.tweetStreamService = tweetStreamService;
 		this.cacheService = cacheService;
-		this.historyOffset = historyOffset;
+		this.since = new SimpleDateFormat("yyyy-MM-dd").parse(since);
 		this.rabbitmqHost = rabbitmqHost;
 		this.rabbitmqUser = rabbitmqUser;
 		this.rabbitmqPassword = rabbitmqPassword;
@@ -64,7 +62,7 @@ public class HistoryService {
 
 		environment.consumerBuilder()
 				.stream(MvcMQConfiguration.STREAM_NAME)
-				.offset(OffsetSpecification.offset(historyOffset))
+				.offset(OffsetSpecification.timestamp(since.getTime()))
 				.messageHandler((offset, message) -> {
 
 					long time = offset.timestamp();
