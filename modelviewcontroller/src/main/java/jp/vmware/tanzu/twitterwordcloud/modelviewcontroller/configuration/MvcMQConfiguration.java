@@ -17,7 +17,9 @@ public class MvcMQConfiguration {
 
 	public static final String EXCHANGE_NAME = "tweet-fanout";
 	public static final String QUEUE_NAME = "tweet-handler";
-	public static final String STREAM_NAME = "tweet-handler-stream";
+
+	//@Value("tweet-handler-stream-${twitter.hashtags}") 
+	public static String STREAM_NAME = "tweet-handler-stream-emergency";
 
 	@Value("notification-${random.uuid}")
 	public String notificationQueue;
