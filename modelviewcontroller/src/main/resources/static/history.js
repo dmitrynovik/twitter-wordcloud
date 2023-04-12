@@ -117,7 +117,7 @@ $(document).ready(function () {
     words.forEach(tweet => {
         const chunks = tweet.text
             .split(' ')
-            .filter(w => /^[A-Za-z]+/.test(w) && /^[A-Za-z0-9]+$/.test(w));
+            .filter(w => /^[A-Za-z]+[A-Za-z0-9]*$/.test(w));
 
         chunks.forEach(word => {
             var count = map.get(word);
