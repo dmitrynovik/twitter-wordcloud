@@ -4,11 +4,12 @@ import com.twitter.clientlib.ApiClient;
 import com.twitter.clientlib.TwitterCredentialsBearer;
 import com.twitter.clientlib.api.TweetsApi;
 import com.twitter.clientlib.api.TwitterApi;
+
+import jp.vmware.tanzu.twitterwordcloud.library.utils.TwitterAPIBearerToken;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PreDestroy;
@@ -28,8 +29,8 @@ public class TwitterClientImpl implements TwitterClient {
 
 	OkHttpClient httpClient;
 
-	public TwitterClientImpl(@Value("${twitter.bearer.token}") String twitterBearerToken) {
-		this.twitterBearerToken = twitterBearerToken;
+	public TwitterClientImpl() {
+		this.twitterBearerToken = TwitterAPIBearerToken.retrieveToken();
 		this.apiInstance = createTwitterInstance();
 		this.status = DOWN;
 	}

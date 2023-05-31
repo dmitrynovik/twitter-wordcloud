@@ -99,7 +99,6 @@ Prepare `application-twitterapiclient.properties` file.
 
 ```
 ## Mandatory
-twitter.bearer.token=TWITTER_BEARER_TOKEN
 twitter.hash.tags="#HASTHAG_TO_SEARCH"
 spring.rabbitmq.host=RABBITMQ_HOST
 spring.rabbitmq.password=RABBITMQ_PASSWORD

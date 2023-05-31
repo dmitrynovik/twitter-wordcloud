@@ -5,6 +5,8 @@ import org.springframework.cloud.bindings.Bindings;
 import org.springframework.cloud.bindings.boot.BindingsPropertiesProcessor;
 import org.springframework.core.env.Environment;
 
+import jp.vmware.tanzu.twitterwordcloud.library.utils.TwitterAPIBearerToken;
+
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +23,10 @@ public class TwitterBindingsPropertiesProcessor implements BindingsPropertiesPro
 		if (myBindings.size() == 0) {
 			return;
 		}
-		properties.put("twitter.bearer.token", myBindings.get(0).getSecret().get("bearer-token"));
+
+		
+
+		properties.put("twitter.bearer.token", TwitterAPIBearerToken.retrieveToken());
 		properties.put("management.endpoint.health.group.liveness.include", "livenessState,twitterClient");
 		properties.put("management.endpoint.health.group.liveness.additional-path", "server:/livez");
 	}

@@ -1,9 +1,8 @@
 ## Starting the API client
-
+* Define the environment variable TWITTER_API_BEARER_TOKEN = (your Twitter API v2 bearer token. You need to regitster as Twitter developer to run this.)
 * Open the file twitterapiclient/src/main/resources/application.properties
 * Update the following:
 ```
-twitter.bearer.token=your-bearer-token
 Add the following. The rabbitmq value should point your laptop rabbitmq
 server.port=8081
 message.queue.enabled=true
