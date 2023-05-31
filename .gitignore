@@ -44,3 +44,5 @@ bindings/twitter/bearer-token
 
 application-modelviecontroller.properties
 
+/gemfire-certs
+

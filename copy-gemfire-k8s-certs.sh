@@ -1,0 +1,3 @@
+kubectl get secret -n tanzu-gemfire gemfire-cluster-cert -o=jsonpath='{.data.password}' | base64 --decode > ./gemfire-certs/password
+kubectl get secret -n tanzu-gemfire gemfire-cluster-cert -o=jsonpath='{.data.keystore\.p12}' | base64 --decode > ./gemfire-certs/keystore.p12
+kubectl get secret -n tanzu-gemfire gemfire-cluster-cert -o=jsonpath='{.data.truststore\.p12}' | base64 --decode > ./gemfire-certs/truststore.p12
