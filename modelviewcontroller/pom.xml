@@ -109,11 +109,11 @@
             <scope>runtime</scope>
         </dependency>
         
-        <dependency>
+        <!-- <dependency>
             <groupId>org.springframework.geode</groupId>
             <artifactId>spring-geode-starter</artifactId>
             <version>1.4.13</version>
-        </dependency>
+        </dependency> -->
 
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -121,10 +121,10 @@
             <version>1.18.26</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.springframework.data</groupId>
             <artifactId>spring-data-geode</artifactId>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -169,7 +169,32 @@
             <artifactId>clr__ui</artifactId>
             <version>${webjars-clr.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>spring-boot-2.7-gemfire-9.15</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vmware.gemfire</groupId>
+            <artifactId>geode-core</artifactId>
+            <version>9.15.0</version>
+        </dependency>
+    <!--if using continuous queries-->
+    <!-- <dependency>
+        <groupId>com.vmware.gemfire</groupId>
+        <artifactId>geode-cq</artifactId>
+        <version>GEMFIRE_VERSION</version>
+    </dependency> -->
     </dependencies>
+
+    <repositories>
+        <repository>
+        <id>gemfire-release-repo</id>
+        <name>Pivotal GemFire Release Repository</name>
+        <url>https://commercial-repo.pivotal.io/data3/gemfire-release-repo/gemfire</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

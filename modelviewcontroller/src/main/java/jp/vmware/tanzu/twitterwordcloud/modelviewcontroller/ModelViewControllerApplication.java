@@ -14,7 +14,8 @@ import jp.vmware.tanzu.twitterwordcloud.modelviewcontroller.service.HistoryServi
 import org.apache.geode.cache.GemFireCache;
 import org.apache.geode.cache.client.ClientCache;
 import org.apache.geode.cache.client.ClientRegionShortcut;
-
+import org.apache.geode.cache.client.SocketFactory;
+import org.apache.geode.cache.client.proxy.ProxySocketFactories;
 import org.springframework.boot.ApplicationRunner;
 
 
@@ -30,7 +31,10 @@ import org.springframework.boot.ApplicationRunner;
 @EnablePdx
 //@EnableEntityDefinedRegions(clientRegionShortcut = ClientRegionShortcut.PROXY, basePackageClasses = MyTweet.class)
 @EnableCachingDefinedRegions(clientRegionShortcut = ClientRegionShortcut.PROXY)
-@EnableClusterConfiguration(useHttp = true, requireHttps = false)
+
+// Uncomment below for using GemFire on localhost:
+//@EnableClusterConfiguration(useHttp = true, requireHttps = false)
+
 @SuppressWarnings("unused")
 public class ModelViewControllerApplication {
 
@@ -47,14 +51,20 @@ public class ModelViewControllerApplication {
     //     };
     // }
 
-  @Bean
-  ApplicationRunner runner(HistoryService historyService) {
-    return args -> {
-            historyService.readFromRabbitMQStream();
+    @Bean
+    SocketFactory myProxySocketFactory() {
+        System.out.println("PROXY FACTORY...");
+        return ProxySocketFactories.sni("172.18.255.203", 9000);
+    }
 
-            // var tweet = historyService.getTweet("1631476990065745920");
-            // System.out.println(" !!! TWEET: " + tweet.text);
-        };
+   @Bean
+    ApplicationRunner runner(HistoryService historyService) {
+        return args -> {
+                historyService.readFromRabbitMQStream();
+
+                // var tweet = historyService.getTweet("1631476990065745920");
+                // System.out.println(" !!! TWEET: " + tweet.text);
+            };
     }
 
 }
