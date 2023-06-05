@@ -7,6 +7,7 @@ import jp.vmware.tanzu.twitterwordcloud.modelviewcontroller.utils.TweetUtils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -34,14 +35,23 @@ public class HistoryService {
 
 	public HistoryService(TweetStreamService tweetStreamService,
 			CacheService cacheService,
-			@Value("${history.since:0}") String since, 
+			@Value("${history.since:#{null}}") String since, 
 			@Value("${spring.rabbitmq.host}") String rabbitmqHost,
 			@Value("${spring.rabbitmq.username}") String rabbitmqUser,
 			@Value("${spring.rabbitmq.password}") String rabbitmqPassword) throws ParseException {
 
 		this.tweetStreamService = tweetStreamService;
 		this.cacheService = cacheService;
-		this.since = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(since);
+
+		if (since == null) {
+			// last hour:
+			Calendar cal = Calendar.getInstance();
+			cal.add(Calendar.HOUR, -1);
+			this.since = cal.getTime();
+		} else {
+			this.since = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(since);
+		}
+
 		this.rabbitmqHost = rabbitmqHost;
 		this.rabbitmqUser = rabbitmqUser;
 		this.rabbitmqPassword = rabbitmqPassword;
