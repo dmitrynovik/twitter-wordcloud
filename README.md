@@ -10,7 +10,7 @@ Supports 2 modes
 
 The following technologies are used.
 
-- Spring Boot
+- [Spring Boot](https://spring.io/projects/spring-boot)
 - [Twitter API Client Library for Java](https://github.com/twitterdev/twitter-api-java-sdk)
 - [Spring Cloud Bindings](https://github.com/spring-cloud/spring-cloud-bindings)
 - [Kuromoji](https://github.com/atilika/kuromoji)
