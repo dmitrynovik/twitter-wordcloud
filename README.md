@@ -19,7 +19,6 @@ The following technologies are used.
 - [React-toastify](https://fkhadra.github.io/react-toastify/introduction)
 
 In addition, the following technologies are used for microservices mode
-- [Spring Security OAuth2.0](https://spring.io/guides/tutorials/spring-boot-oauth2/)
 - [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth)
 - [RabbitMQ](https://www.rabbitmq.com/)
 - [PostgreSQL](https://www.postgresql.org/)
