@@ -132,21 +132,16 @@ spring.datasource.username=POSTGRES_USERNAME
 spring.r2dbc.url=POSTGRES_URI
 spring.r2dbc.password=POSTGRES_PASSWORD
 spring.r2dbc.username=POSTGRES_USERNAME
-spring.security.oauth2.client.registration.{name}.client-id=client-id
-spring.security.oauth2.client.registration.{name}.client-secret	=client-secret
-spring.security.oauth2.client.registration.{name}.provider=provider
-spring.security.oauth2.client.registration.{name}.client-name=client-name
-spring.security.oauth2.client.registration.{name}.client-authentication-method=client-authmode
-spring.security.oauth2.client.registration.{name}.authorization-grant-type=grant-type
-spring.security.oauth2.client.registration.{name}.redirect-uri=redirect-uri
-spring.security.oauth2.client.registration.{name}.scope=scope
-spring.security.oauth2.client.provider.{provider}.issuer-uri=issuer-uri
-spring.security.oauth2.client.provider.{provider}.authorization-uri=autorization-uri
-spring.security.oauth2.client.provider.{provider}.token-uri=token-uri
-spring.security.oauth2.client.provider.{provider}.user-info-uri=user-info-uri
-spring.security.oauth2.client.provider.{provider}.user-info-authentication-method=user-info-authentication-method
-spring.security.oauth2.client.provider.{provider}.jwk-set-uri=jwk-set-uri
-spring.security.oauth2.client.provider.{provider}.user-name-attribute=user-name-attribute
+spring.data.gemfire.cache.name=Tweets
+spring.data.gemfire.pool.locators=127.0.0.1[10334]
+
+
+## Optional
+management.metrics.export.wavefront.api-token=WAVEFRONT_TOKEN
+management.metrics.export.wavefront.uri=WAVEFRONT_URI
+management.metrics.export.wavefront.enabled=true
+wavefront.tracing.enabled=true
+wavefront.freemium-account=false
 spring.redis.client-name={client-name}
 spring.redis.cluster.max-redirects={cluster.max-redirects}
 spring.redis.cluster.nodes={cluster.nodes}
@@ -158,14 +153,6 @@ spring.redis.sentinel.master={sentinel.master}
 spring.redis.sentinel.nodes={sentinel.nodes}
 spring.redis.ssl={ssl}
 spring.redis.url={url}
-
-
-## Optional
-management.metrics.export.wavefront.api-token=WAVEFRONT_TOKEN
-management.metrics.export.wavefront.uri=WAVEFRONT_URI
-management.metrics.export.wavefront.enabled=true
-wavefront.tracing.enabled=true
-wavefront.freemium-account=false
 ```
 
 Run the modelviewcontroller app.
