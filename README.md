@@ -87,8 +87,6 @@ Additionally, to standalone mode prepare the following.
 - RabbitMQ Cluster
 - PostgreSQL Server
 - GemFire
-- OAuth2.0 Endpoint
-
 
 ### How to run
 * Define the environment variable TWITTER_API_BEARER_TOKEN = (your Twitter API v2 bearer token. You need to regitster as Twitter developer to run this.)
