@@ -23,8 +23,8 @@ In addition, the following technologies are used for microservices mode
 - [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth)
 - [RabbitMQ](https://www.rabbitmq.com/)
 - [PostgreSQL](https://www.postgresql.org/)
-- [Redis](https://redis.io/)
-- [Wavefront](https://tanzu.vmware.com/observability)
+- [GemFire](https://www.vmware.com/products/gemfire.html)
+
 
 ## Standalone mode
 
@@ -50,10 +50,10 @@ Standalone mode runs in the following technologies
 ### How to run
 
 ```
-export TWITTER_BEARER_TOKEN="AAAA...BSufQEAAAAAp9W..."
+export TWITTER_API_BEARER_TOKEN="AAAA...BSufQEAAAAAp9W..."
 export TWITTER_HASHTAGS="#HASTHAG_TO_SEARCH"
-git clone https://github.com/mhoshi-vm/twitter-wordcloud-demo
-cd twitter-wordcloud-demo
+git clone https://github.com/dmitrynovik/twitter-wordcloud
+cd twitter-wordcloud
 ./mvnw install && ./mvnw spring-boot:run -pl wordcloud
 ```
 
@@ -67,7 +67,7 @@ Running in several instances (aka scale out) in standalone will lead to the foll
 
 ## Microservices mode
 
-![](img/pic7.png)
+![](img/wordcloud-rmq-gemfire-no-pg.png)
 
 In microservice mode we decouple the function in the following way
 
@@ -87,11 +87,9 @@ Additionally, to standalone mode prepare the following.
 
 - RabbitMQ Cluster
 - PostgreSQL Server
-- Redis Cluster
+- GemFire
 - OAuth2.0 Endpoint
 
-For observability also prepare the following
-- Wavefront API token
 
 ### How to run
 
@@ -174,19 +172,4 @@ Run the modelviewcontroller app.
 
 ```
 ./mvnw install && ./mvnw spring-boot:run -pl wordcloud -P modelviewcontroller
-```
-
-### Yikes! this is difficult ...
-
-Don't worry. We have an easier way, the [TAP way](TAP.md)
-
-# Experimental
-
-Both standalone/microservices support [Twitter API v2 streaming](https://developer.twitter.com/en/docs/tutorials/stream-tweets-in-real-time) for more realtime handling of tweets.
-Currently, a known issue (closed but) [unresolved](https://github.com/twitterdev/twitter-api-java-sdk/issues/43)
-
-To run streaming add the following parameter
-
-```
-twitter.search.mode=stream
 ```
