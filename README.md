@@ -114,6 +114,8 @@ Run the twitter-api client
 ./mvnw install && ./mvnw spring-boot:run -pl wordcloud -P twitterapiclient
 ```
 
+Prepare your GemFire cluster on Kubernetes as described [here](https://gemfire.dev/tutorials/spring-for-gemfire/get-started-off-platform-gf4k8s-sbgf/)
+
 Prepare `application-modelviecontroller.properties` 
 
 ```
@@ -130,9 +132,15 @@ spring.r2dbc.url=POSTGRES_URI
 spring.r2dbc.password=POSTGRES_PASSWORD
 spring.r2dbc.username=POSTGRES_USERNAME
 spring.data.gemfire.cache.name=Tweets
-spring.data.gemfire.pool.locators=127.0.0.1[10334]
+spring.data.gemfire.pool.locators=YOUR_GEMFIRE_CLUSTER_NAME-locator-0.gemfire-cluster-locator.YOUR_GEMFIRE_CLUSTER_NAMESPACE.svc.cluster.local[10334]
+spring.data.gemfire.management.http.host=YOUR_GEMFIRE_CLUSTER_NAME-locator-0.gemfire-cluster-locator.YOUR_GEMFIRE_CLUSTER_NAMESPACE.svc.cluster.local
+spring.data.gemfire.pool.socket-factory-bean-name=myProxySocketFactory
+spring.data.gemfire.security.ssl.truststore=PATH_TO_K8S_GEMFIRE_CERTS/truststore.p12
+spring.data.gemfire.security.ssl.truststore.password=YOUR_K8S_CLUSTER_GEMFIRE_PASSWORD
+spring.data.gemfire.security.ssl.keystore=PATH_TO_K8S_GEMFIRE_CERTS/keystore.p12
+spring.data.gemfire.security.ssl.keystore.password=YOUR_K8S_CLUSTER_GEMFIRE_PASSWORD
 
-
+****
 ## Optional
 management.metrics.export.wavefront.api-token=WAVEFRONT_TOKEN
 management.metrics.export.wavefront.uri=WAVEFRONT_URI
