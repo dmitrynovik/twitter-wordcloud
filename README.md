@@ -92,8 +92,8 @@ Additionally, to standalone mode prepare the following.
 
 
 ### How to run
-
-Prepare `application-twitterapiclient.properties` file.
+* Define the environment variable TWITTER_API_BEARER_TOKEN = (your Twitter API v2 bearer token. You need to regitster as Twitter developer to run this.)
+* Prepare `application-twitterapiclient.properties` file.
 
 ```
 ## Mandatory
