@@ -10,7 +10,7 @@ Supports 2 modes
 
 The following technologies are used.
 
-- Spring Boot
+- [Spring Boot](https://spring.io/projects/spring-boot)
 - [Twitter API Client Library for Java](https://github.com/twitterdev/twitter-api-java-sdk)
 - [Spring Cloud Bindings](https://github.com/spring-cloud/spring-cloud-bindings)
 - [Kuromoji](https://github.com/atilika/kuromoji)
@@ -23,8 +23,8 @@ In addition, the following technologies are used for microservices mode
 - [Spring Cloud Sleuth](https://spring.io/projects/spring-cloud-sleuth)
 - [RabbitMQ](https://www.rabbitmq.com/)
 - [PostgreSQL](https://www.postgresql.org/)
-- [Redis](https://redis.io/)
-- [Wavefront](https://tanzu.vmware.com/observability)
+- [GemFire](https://www.vmware.com/products/gemfire.html)
+
 
 ## Standalone mode
 
@@ -50,10 +50,10 @@ Standalone mode runs in the following technologies
 ### How to run
 
 ```
-export TWITTER_BEARER_TOKEN="AAAA...BSufQEAAAAAp9W..."
+export TWITTER_API_BEARER_TOKEN="AAAA...BSufQEAAAAAp9W..."
 export TWITTER_HASHTAGS="#HASTHAG_TO_SEARCH"
-git clone https://github.com/mhoshi-vm/twitter-wordcloud-demo
-cd twitter-wordcloud-demo
+git clone https://github.com/dmitrynovik/twitter-wordcloud
+cd twitter-wordcloud
 ./mvnw install && ./mvnw spring-boot:run -pl wordcloud
 ```
 
@@ -67,7 +67,7 @@ Running in several instances (aka scale out) in standalone will lead to the foll
 
 ## Microservices mode
 
-![](img/pic7.png)
+![](img/wordcloud-rmq-gemfire-no-pg.png)
 
 In microservice mode we decouple the function in the following way
 
@@ -87,15 +87,13 @@ Additionally, to standalone mode prepare the following.
 
 - RabbitMQ Cluster
 - PostgreSQL Server
-- Redis Cluster
+- GemFire
 - OAuth2.0 Endpoint
 
-For observability also prepare the following
-- Wavefront API token
 
 ### How to run
-
-Prepare `application-twitterapiclient.properties` file.
+* Define the environment variable TWITTER_API_BEARER_TOKEN = (your Twitter API v2 bearer token. You need to regitster as Twitter developer to run this.)
+* Prepare `application-twitterapiclient.properties` file.
 
 ```
 ## Mandatory
@@ -134,21 +132,16 @@ spring.datasource.username=POSTGRES_USERNAME
 spring.r2dbc.url=POSTGRES_URI
 spring.r2dbc.password=POSTGRES_PASSWORD
 spring.r2dbc.username=POSTGRES_USERNAME
-spring.security.oauth2.client.registration.{name}.client-id=client-id
-spring.security.oauth2.client.registration.{name}.client-secret	=client-secret
-spring.security.oauth2.client.registration.{name}.provider=provider
-spring.security.oauth2.client.registration.{name}.client-name=client-name
-spring.security.oauth2.client.registration.{name}.client-authentication-method=client-authmode
-spring.security.oauth2.client.registration.{name}.authorization-grant-type=grant-type
-spring.security.oauth2.client.registration.{name}.redirect-uri=redirect-uri
-spring.security.oauth2.client.registration.{name}.scope=scope
-spring.security.oauth2.client.provider.{provider}.issuer-uri=issuer-uri
-spring.security.oauth2.client.provider.{provider}.authorization-uri=autorization-uri
-spring.security.oauth2.client.provider.{provider}.token-uri=token-uri
-spring.security.oauth2.client.provider.{provider}.user-info-uri=user-info-uri
-spring.security.oauth2.client.provider.{provider}.user-info-authentication-method=user-info-authentication-method
-spring.security.oauth2.client.provider.{provider}.jwk-set-uri=jwk-set-uri
-spring.security.oauth2.client.provider.{provider}.user-name-attribute=user-name-attribute
+spring.data.gemfire.cache.name=Tweets
+spring.data.gemfire.pool.locators=127.0.0.1[10334]
+
+
+## Optional
+management.metrics.export.wavefront.api-token=WAVEFRONT_TOKEN
+management.metrics.export.wavefront.uri=WAVEFRONT_URI
+management.metrics.export.wavefront.enabled=true
+wavefront.tracing.enabled=true
+wavefront.freemium-account=false
 spring.redis.client-name={client-name}
 spring.redis.cluster.max-redirects={cluster.max-redirects}
 spring.redis.cluster.nodes={cluster.nodes}
@@ -160,33 +153,10 @@ spring.redis.sentinel.master={sentinel.master}
 spring.redis.sentinel.nodes={sentinel.nodes}
 spring.redis.ssl={ssl}
 spring.redis.url={url}
-
-
-## Optional
-management.metrics.export.wavefront.api-token=WAVEFRONT_TOKEN
-management.metrics.export.wavefront.uri=WAVEFRONT_URI
-management.metrics.export.wavefront.enabled=true
-wavefront.tracing.enabled=true
-wavefront.freemium-account=false
 ```
 
 Run the modelviewcontroller app.
 
 ```
 ./mvnw install && ./mvnw spring-boot:run -pl wordcloud -P modelviewcontroller
-```
-
-### Yikes! this is difficult ...
-
-Don't worry. We have an easier way, the [TAP way](TAP.md)
-
-# Experimental
-
-Both standalone/microservices support [Twitter API v2 streaming](https://developer.twitter.com/en/docs/tutorials/stream-tweets-in-real-time) for more realtime handling of tweets.
-Currently, a known issue (closed but) [unresolved](https://github.com/twitterdev/twitter-api-java-sdk/issues/43)
-
-To run streaming add the following parameter
-
-```
-twitter.search.mode=stream
 ```
